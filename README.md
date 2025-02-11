@@ -57,6 +57,7 @@ python manage.py migrate
 ```bash
 DJANGO_SETTINGS_MODULE=chat_project.settings python -m daphne chat_project.asgi:application
 ```
+6. Signup users before login since its a chat application. (IMPORTANT) 
 
 ## 💻 Development
 
