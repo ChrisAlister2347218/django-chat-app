@@ -3,7 +3,11 @@ services:
     name: django-chat
     env: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn chat_project.asgi:application -b 0.0.0.0:$PORT -w 4 -k uvicorn.workers.UvicornWorker"
+    startCommand: >
+      daphne -b 0.0.0.0 -p $PORT 
+      --proxy-headers 
+      --access-log - 
+      chat_project.asgi:application
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
@@ -13,5 +17,5 @@ services:
         generateValue: true
       - key: DJANGO_DEBUG
         value: false
-      - key: PORT
-        value: 8000 
+      - key: DJANGO_SETTINGS_MODULE
+        value: chat_project.settings 
