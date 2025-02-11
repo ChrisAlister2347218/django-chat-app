@@ -9,12 +9,8 @@ gunicorn==21.2.0
 # WebSocket Support
 channels-redis==4.1.0
 
-# Database
-sqlite3
-
 # Development Tools
 python-dotenv==1.0.0
-django-debug-toolbar==4.2.0
 
 # Security
 django-cors-headers==4.3.0
