@@ -3,7 +3,7 @@
 A modern real-time chat application built with Django and Channels.
 
 ## 🚀 Live Demo
-[View Demo](https://django-chat.onrender.com)
+[View Demo](https://django-chat-10rn.onrender.com/)
 
 ## ✨ Features
 
@@ -55,7 +55,7 @@ python manage.py migrate
 
 5. Start development server
 ```bash
-python manage.py runserver
+DJANGO_SETTINGS_MODULE=chat_project.settings python -m daphne chat_project.asgi:application
 ```
 
 ## 💻 Development
