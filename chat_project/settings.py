@@ -11,10 +11,17 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'your-default-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['django-chat.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'django-chat-10rn.onrender.com',  # Your Render domain
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0',
+]
 
 # Add CSRF trusted origins
-CSRF_TRUSTED_ORIGINS = ['https://django-chat.onrender.com']
+CSRF_TRUSTED_ORIGINS = [
+    'https://django-chat-10rn.onrender.com'
+]
 
 INSTALLED_APPS = [
     # Default Django apps:

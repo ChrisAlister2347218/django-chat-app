@@ -3,7 +3,7 @@ services:
     name: django-chat
     env: python
     buildCommand: "./build.sh"
-    startCommand: "daphne chat_project.asgi:application"
+    startCommand: "daphne -b 0.0.0.0 -p $PORT chat_project.asgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
@@ -12,4 +12,6 @@ services:
       - key: DJANGO_SECRET_KEY
         generateValue: true
       - key: DJANGO_DEBUG
-        value: false 
+        value: false
+      - key: PORT
+        value: 8000 
