@@ -1,9 +1,17 @@
 {% extends "chat/base.html" %}
 {% block content %}
-<h2>Login</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
+<div class="login-container">
+    <h2>Welcome to Real-time Chat</h2>
+    <p class="welcome-text">Connect with friends in real-time!</p>
+    
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="login-btn">Login</button>
+    </form>
+    
+    <div class="auth-links">
+        <p>New user? <a href="{% url 'signup' %}">Sign Up</a></p>
+    </div>
+</div>
 {% endblock %}
