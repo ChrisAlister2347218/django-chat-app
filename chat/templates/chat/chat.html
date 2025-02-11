@@ -1,0 +1,112 @@
+<!-- chat/templates/chat/chat.html -->
+{% extends "chat/base.html" %}
+{% load static %}
+{% block content %}
+<div class="chat-container">
+  <div class="sidebar">
+    <h3>Active Users</h3>
+    <ul>
+      {% for user in users %}
+        <li>
+          <a href="{% url 'chat_with' user.username %}" {% if chat_partner.username == user.username %}class="active"{% endif %}>
+            <i class="fas fa-user-circle"></i>
+            {{ user.username }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="chat-window">
+    {% if chat_partner %}
+      <h3>
+        <i class="fas fa-comment"></i>
+        Chat with {{ chat_partner.username }}
+      </h3>
+      <div id="chat-log">
+        {% for message in messages %}
+          <div class="chat-message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+            <strong>{{ message.sender.username }}</strong>
+            <p>{{ message.content }}</p>
+            <small class="timestamp">{{ message.timestamp|date:"g:i A" }}</small>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="chat-input-container">
+        <textarea 
+          id="chat-message-input" 
+          placeholder="Type your message..."
+          onkeydown="if(event.keyCode==13 && !event.shiftKey){event.preventDefault();document.getElementById('chat-message-submit').click();}">
+        </textarea>
+        <button id="chat-message-submit">
+          <i class="fas fa-paper-plane"></i> Send
+        </button>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <i class="fas fa-comments"></i>
+        <h3>Welcome to the Chat Application</h3>
+        <p>Select a user from the sidebar to start chatting</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% if chat_partner %}
+<script>
+const roomName = [
+  "{{ request.user.username|slugify }}", 
+  "{{ chat_partner.username|slugify }}"
+].sort().join('-').toLowerCase();
+
+const wsScheme = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+const chatSocket = new WebSocket(
+  wsScheme + window.location.host + '/ws/chat/' + roomName + '/'
+);
+
+const chatLog = document.getElementById('chat-log');
+chatLog.scrollTop = chatLog.scrollHeight;
+
+chatSocket.onmessage = function(e) {
+  const data = JSON.parse(e.data);
+  const messageElement = document.createElement('div');
+  messageElement.className = `chat-message ${data.sender === "{{ request.user.username }}" ? 'sent' : 'received'}`;
+  
+  const time = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  messageElement.innerHTML = `
+    <strong>${data.sender}</strong>
+    <p>${data.message}</p>
+    <small class="timestamp">${time}</small>
+  `;
+  
+  chatLog.appendChild(messageElement);
+  chatLog.scrollTop = chatLog.scrollHeight;
+};
+
+chatSocket.onclose = function(e) {
+  console.error('Chat socket closed unexpectedly');
+};
+
+document.getElementById('chat-message-submit').onclick = function(e) {
+  const messageInputDom = document.getElementById('chat-message-input');
+  const message = messageInputDom.value.trim();
+  
+  if (message) {
+    chatSocket.send(JSON.stringify({
+      'message': message,
+      'sender': "{{ request.user.username }}",
+      'receiver': "{{ chat_partner.username }}"
+    }));
+    messageInputDom.value = '';
+  }
+};
+
+// Add Enter key support
+document.getElementById('chat-message-input').onkeydown = function(e) {
+  if (e.keyCode === 13 && !e.shiftKey) {
+    e.preventDefault();
+    document.getElementById('chat-message-submit').click();
+  }
+};
+</script>
+{% endif %}
+{% endblock %}
