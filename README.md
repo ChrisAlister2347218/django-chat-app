@@ -83,9 +83,9 @@ git push origin feature/AmazingFeature
 
 ## 👥 Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_twitter)
+Chris Alister
 
-Project Link: [https://github.com/YOUR_USERNAME/django-chat-app](https://github.com/YOUR_USERNAME/django-chat-app)
+Project Link: [https://github.com/ChrisAlister2347218/django-chat-app](https://github.com/ChrisAlister2347218/django-chat-app)
 
 ## Project Structure
 
