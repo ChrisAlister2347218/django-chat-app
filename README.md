@@ -114,18 +114,6 @@ chat_project/
     └── wsgi.py
 ```
 
-## Screenshots
-
-[Add screenshots of your application here]
-
-## Future Improvements
-
-- Add emoji support
-- Implement file sharing
-- Add read receipts
-- Add typing indicators
-- Enable group chats
-- Add message search functionality
 
 ## Contributing
 
